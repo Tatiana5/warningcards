@@ -1,0 +1,7 @@
+services:
+    tatiana5.warningcards.listener:
+        class: tatiana5\warningcards\event\listener
+        arguments:
+            - @ext.manager
+        tags:
+            - { name: event.listener }

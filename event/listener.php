@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Warning Cards
-* @copyright (c) 2016 ??????????????5
+* @copyright (c) 2016 Татьяна5
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -26,7 +26,7 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.viewtopic_modify_post_data'	=> 'get_banned_users',
-			'core.viewtopic_modify_post_row'	=> 'modify_postrow',
+			'core.viewtopic_modify_post_row'	=> 'modify_post_row',
 		);
 	}
 	
@@ -43,7 +43,8 @@ class listener implements EventSubscriberInterface
 		$this->aw_enabled = false;
 	}
 	
-	public function get_banned_users($event) {
+	public function get_banned_users($event)
+	{
 		if($this->phpbb_extension_manager->is_enabled('rxu/AdvancedWarnings') == false)
 		{
 			$user_cache = $event['user_cache'];
@@ -56,18 +57,24 @@ class listener implements EventSubscriberInterface
 		}
 	}
 	
-	public function modify_postrow($event)
+	public function modify_post_row($event)
 	{
+		$post_row = $event['post_row'];
+		$user_poster_data = $event['user_poster_data'];
+		
 		if($this->aw_enabled == false)
 		{
-			$postrow = $event['post_row'];
-			$poster_id = $row['user_id'];
+			$poster_id = $event['poster_id'];
 			
-			$postrow = array_merge($postrow, array(
+			$post_row = array_merge($post_row, array(
 				'POSTER_BANNED'		=> (in_array($poster_id, $this->banned_users)) ? true : false,
 			));
-			
-			$event['post_row'] = $postrow;
 		}
+		
+		$post_row = array_replace($post_row, array(
+			'POSTER_WARNINGS'	=> $user_poster_data['warnings'],
+		));
+		
+		$event['post_row'] = $post_row;
 	}
 }
