@@ -1,0 +1,13 @@
+<!-- IF postrow.POSTER_BANNED -->
+	<dd>
+		<img src="{ROOT_PATH}ext/tatiana5/warningcards/styles/all/theme/images/red-card.png" alt="{postrow.POSTER_BANNED}" title="{postrow.POSTER_BANNED}" />
+	</dd>
+<!-- ELSE -->
+	<!-- IF postrow.POSTER_WARNINGS > 0 -->
+		<dd>
+			{% for i in 1..postrow.POSTER_WARNINGS %}
+				<img src="{ROOT_PATH}ext/tatiana5/warningcards/styles/all/theme/images/yellow-card.png" alt="{postrow.POSTER_WARNINGS}" title="{postrow.POSTER_WARNINGS}" />
+			{% endfor %}
+		</dd>
+	<!-- ENDIF -->
+<!-- ENDIF -->

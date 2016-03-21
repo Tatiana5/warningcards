@@ -1,0 +1,25 @@
+{
+    "name": "tatiana5/warningcards",
+    "type": "phpbb-extension",
+    "description": "Display red ban and yellow warning cards in the topic",
+    "version": "0.0.1",
+    "time": "2016-03-21",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Татьяна5"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+      "phpbb/epv": "dev-master"
+    },
+    "extra": {
+        "display-name": "Warning Cards",
+        "soft-require": {
+            "phpbb/phpbb": "3.1.*@dev"
+        }
+    }
+}
