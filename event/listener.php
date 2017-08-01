@@ -29,7 +29,7 @@ class listener implements EventSubscriberInterface
 			'core.viewtopic_modify_post_row'	=> 'modify_post_row',
 		);
 	}
-	
+
 	/** @var \phpbb\extension\manager */
 	protected $phpbb_extension_manager;
 
@@ -42,13 +42,13 @@ class listener implements EventSubscriberInterface
 		$this->banned_users = array();
 		$this->aw_enabled = false;
 	}
-	
+
 	public function get_banned_users($event)
 	{
-		if($this->phpbb_extension_manager->is_enabled('rxu/AdvancedWarnings') == false)
+		if ($this->phpbb_extension_manager->is_enabled('rxu/AdvancedWarnings') == false)
 		{
 			$user_cache = $event['user_cache'];
-			
+
 			$this->banned_users = phpbb_get_banned_user_ids(array_keys($user_cache), true);
 		}
 		else
@@ -56,25 +56,25 @@ class listener implements EventSubscriberInterface
 			$this->aw_enabled = true;
 		}
 	}
-	
+
 	public function modify_post_row($event)
 	{
 		$post_row = $event['post_row'];
 		$user_poster_data = $event['user_poster_data'];
-		
-		if($this->aw_enabled == false)
+
+		if ($this->aw_enabled == false)
 		{
 			$poster_id = $event['poster_id'];
-			
+
 			$post_row = array_merge($post_row, array(
 				'POSTER_BANNED'		=> (in_array($poster_id, $this->banned_users)) ? true : false,
 			));
 		}
-		
+
 		$post_row = array_replace($post_row, array(
 			'POSTER_WARNINGS'	=> $user_poster_data['warnings'],
 		));
-		
+
 		$event['post_row'] = $post_row;
 	}
 }
